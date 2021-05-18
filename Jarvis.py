@@ -4,6 +4,7 @@ import datetime
 import wikipedia
 import webbrowser
 import os
+import smtplib
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -45,9 +46,17 @@ def takeCommand():
         print("Say that again please...")
         return "None"
     return query
+def sendEmail(to, content):
+    server = smtplib.SMTP('smtp.gamil.com', 587)
+    server.ehlo()
+    server.starttls()#put password in txt file then read it
+    server.login("Myemail@gmail.com", "YourPassword")
+    server.sendmail("Myemail@gmail.com", to , content)
+    server.close()
+
 
 if __name__=="__main__":
-    #speak("Aditya is good boy and he likes to play with computer")
+    #speak("Addu is good boy and he likes to code.")
     wishMe()
     while True:
         query = takeCommand().lower()
@@ -122,5 +131,18 @@ if __name__=="__main__":
         elif 'open Calculator ' in query:
             CalculatorPath = "C:\\Users\\INTEL\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\System Tools\\ File Explorer"
             os.startfile(CalculatorPath)
+
+        #make dictionary
+        elif 'email to addu' in query:
+            try:
+                speak("What should I say?")
+                content = takeCommand()
+                to = "adityaph135@gmail.com"
+                sendEmail(to, content)
+                speak("Email has been sent!")
+            except Exception as e:
+                print(e)
+                speak("Sorry Addu, I not able to send this email")
+
 
           
